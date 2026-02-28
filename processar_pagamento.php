@@ -13,6 +13,8 @@ mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 require_once __DIR__ . '/vendor/autoload.php';
 include_once "conexao.php";
 
+
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -22,17 +24,20 @@ use MercadoPago\Client\Payment\PaymentClient;
 use MercadoPago\Exceptions\MPApiException;
 use MercadoPago\MercadoPagoConfig;
 
-function json_response(array $payload, int $statusCode = 200): void {
+function json_response(array $payload, int $statusCode = 200): void
+{
     http_response_code($statusCode);
     echo json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     exit;
 }
 
-function json_error(string $message, int $statusCode = 400): void {
+function json_error(string $message, int $statusCode = 400): void
+{
     json_response(['status' => 'error', 'message' => $message], $statusCode);
 }
 
-function resolver_access_token(): string {
+function resolver_access_token(): string
+{
     $token = trim((string)(getenv('MP_ACCESS_TOKEN') ?: ''));
     if ($token === '') {
         throw new RuntimeException('MP_ACCESS_TOKEN nao configurado.');
@@ -40,7 +45,8 @@ function resolver_access_token(): string {
     return $token;
 }
 
-function calcular_totais(mysqli $conn, array $carrinho): float {
+function calcular_totais(mysqli $conn, array $carrinho): float
+{
     $total = 0.0;
     $stmt = $conn->prepare("SELECT preco_venda_peca FROM tbl_pecas WHERE id_peca = ?");
     foreach ($carrinho as $id => $qtd) {
@@ -59,7 +65,8 @@ function calcular_totais(mysqli $conn, array $carrinho): float {
     return $total;
 }
 
-function criar_pagamento_mp(array $data, float $valor, int $pedidoId): array {
+function criar_pagamento_mp(array $data, float $valor, int $pedidoId): array
+{
     MercadoPagoConfig::setAccessToken(resolver_access_token());
     MercadoPagoConfig::setRuntimeEnviroment(MercadoPagoConfig::SERVER);
 
@@ -113,12 +120,12 @@ $idCliente = (int)$_SESSION['cliente_id'];
 
 try {
 
-    $conn->begin_transaction();
-
     // 1️⃣ Calcula total
     $valorTotal = calcular_totais($conn, $_SESSION['carrinho']);
 
     // 2️⃣ Cria pedido ANTES do pagamento
+    $conn->begin_transaction();
+
     $statusInicial = 'aguardando_pagamento';
 
     $stmtPedido = $conn->prepare(
@@ -156,14 +163,13 @@ try {
 
     // 5️⃣ Se aprovado, baixa estoque
     if ($statusMp === 'approved') {
+
         $conn->begin_transaction();
 
         $stmtPeca = $conn->prepare("SELECT estoque_peca FROM tbl_pecas WHERE id_peca = ? FOR UPDATE");
         $stmtEstoque = $conn->prepare("UPDATE tbl_pecas SET estoque_peca = estoque_peca - ? WHERE id_peca = ?");
 
         foreach ($_SESSION['carrinho'] as $idPeca => $qtd) {
-            $idPeca = (int)$idPeca;
-            $qtd = (int)$qtd;
 
             $stmtPeca->bind_param('i', $idPeca);
             $stmtPeca->execute();
@@ -191,8 +197,11 @@ try {
         'pedido_id' => $pedidoId,
         'id' => $idTransacaoMp
     ]);
-
 } catch (Throwable $e) {
-    try { $conn->rollback(); } catch (Throwable $ignore) {}
+    error_log("Erro pagamento: " . $e->getMessage());
+    try {
+        $conn->rollback();
+    } catch (Throwable $ignore) {
+    }
     json_error($e->getMessage(), 500);
 }
