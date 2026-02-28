@@ -1,0 +1,71 @@
+# ============================================
+# GIT IGNORE - BOXTER AUTO PEÇAS
+# ============================================
+# Arquivos e pastas que NÃO devem ir para o repositório
+
+# ============================================
+# CONFIGURAÇÃO E CREDENCIAIS (⚠️ CRÍTICO)
+# ============================================
+.env
+.env.local
+.env.locaweb
+.env.*.local
+.env.production
+
+# ============================================
+# LOGS E TEMPORÁRIOS
+# ============================================
+logs/
+*.log
+tmp/
+temp/
+*.tmp
+
+# ============================================
+# UPLOADS (arquivos do usuário)
+# ============================================
+uploads/
+img/uploads/
+public/uploads/
+
+# ============================================
+# IDE E EDITORES
+# ============================================
+.vscode/settings.json
+.vscode/launch.json
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ============================================
+# DEPENDÊNCIAS
+# ============================================
+# PHP
+vendor/
+node_modules/
+
+# ============================================
+# SISTEMA OPERACIONAL
+# ============================================
+.DS_Store
+Thumbs.db
+*.exe
+
+# ============================================
+# ARQUIVOS DE BACKUP
+# ============================================
+*.bak
+*.backup
+*.sql.gz
+*.sql.bak
+database_backup/
+backups/
+
+# ============================================
+# DESENVOLVIMENTO XLOCALSTACK
+# ============================================
+.localstack/
+localstack-data/

@@ -1,0 +1,85 @@
+# ============================================
+# SEGURANÇA - HTACCESS - BOXTER AUTO PEÇAS
+# ============================================
+
+# ============================================
+# 1. BLOQUEIAR ACESSO DIRETO A ARQUIVOS SENSÍVEIS
+# ============================================
+<FilesMatch "\.(env|log|txt|bak|sql|json)$">
+    Deny from all
+</FilesMatch>
+
+# Bloquear pasta vendor e .git utilizando regras de reescrita (necessário em .htaccess)
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    # nega acesso direto à pasta vendor
+    RewriteRule ^vendor/ - [F,L,NC]
+    # nega acesso a qualquer recurso dentro de .git
+    RewriteRule ^\.git - [F,L,NC]
+</IfModule>
+
+# Bloquear arquivos de config
+<FilesMatch "^(config|settings|database)\.php$">
+    Deny from all
+</FilesMatch>
+
+# ============================================
+# 2. FORÇA HTTPS (descomentar em produção)
+# ============================================
+# <IfModule mod_rewrite.c>
+#     RewriteEngine On
+#     RewriteCond %{HTTPS} off
+#     RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+# </IfModule>
+
+# ============================================
+# 3. REMOVER EXTENSÃO .php DAS URLs (opcional)
+# ============================================
+# <IfModule mod_rewrite.c>
+#     RewriteEngine On
+#     RewriteCond %{REQUEST_FILENAME} !-f
+#     RewriteCond %{REQUEST_FILENAME} !-d
+#     RewriteRule ^(.+)\.php$ - [L]
+#     RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]
+# </IfModule>
+
+# ============================================
+# 4. CACHE CONTROL
+# ============================================
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css "access 1 year"
+    ExpiresByType application/javascript "access 1 year"
+    ExpiresByType image/jpeg "access 1 month"
+    ExpiresByType image/png "access 1 month"
+    ExpiresByType image/gif "access 1 month"
+</IfModule>
+
+# ============================================
+# 5. COMPRESSÃO GZIP
+# ============================================
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-javascript
+</IfModule>
+
+# ============================================
+# 6. SEGURANÇA - HEADERS
+# ============================================
+<IfModule mod_headers.c>
+    # Previne clickjacking
+    Header always append X-Frame-Options "SAMEORIGIN"
+    
+    # Previne MIME sniffing
+    Header always append X-Content-Type-Options "nosniff"
+    
+    # XSS Protection
+    Header always append X-XSS-Protection "1; mode=block"
+</IfModule>

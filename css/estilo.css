@@ -1,0 +1,1664 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+/*
+  .montserrat-<uniquifier>
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: <weight>;
+  font-style: normal;  
+
+*/
+@import url("https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+/*
+  .karla-<uniquifier>
+  font-family: "Karla", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: <weight>;
+  font-style: normal;
+*/
+
+/* ============= Variaveis de layout ================= */
+
+:root {
+  --cor-texto: #000000;
+  --cor-texto-suave: #e4e4e4;
+  --cor-principal: #cd221f;
+  --cor-hover: #0056b3;
+
+  --largura-maxima: 1500px;
+
+  --texto-tamanho: 30px; /* rem ou em - 30px / 16px:  1,875em */
+  --texto-subtitulo: 20px; /* rem ou em - 20px / 16px: 1,25em */
+
+  --fonte-menu: "Karla", sans-serif;
+  --fonte-base: "Montserrat", sans-serif;
+
+  /* ============= Fim das Variáveis de layout =========== */
+}
+
+html,
+body {
+  width: 100%;
+  overflow-x: hidden; /* Corta qualquer coisa que tente sair pela lateral */
+}
+
+body {
+  background-color: #e4e4e4; /* Ou a cor da seção de baixo */
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.main-content {
+  padding-top: 150px;
+  padding-bottom: 50px;
+  min-height: 85vh;
+}
+.card-dados {
+  border-radius: 15px;
+  border: none;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  background: white;
+}
+.label-custom {
+  color: #6c757d;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+.info-value {
+  color: #212529;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+}
+
+/* -------------------------------------- TOPO ---------------------------------------------------- */
+
+/* Estilo base para os links do menu */
+.navbar-nav .nav-link {
+  letter-spacing: 2px;
+  font-size: 0.9rem;
+  padding-left: 15px;
+  padding-right: 15px;
+  transition: 0.3s;
+  color: var(--cor-texto-suave);
+  position: relative;
+  text-decoration: none !important;
+}
+
+.img-logo-topo {
+  height: 60px;
+  width: auto;
+  transition: all 0.3s ease;
+}
+
+.navbar-nav .nav-item {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+/* --- EFEITO LINHA AZUL (Apenas para links de texto) --- */
+/* Cria a linha invisível abaixo do texto */
+.nav-link::after,
+footer a::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0px;
+  left: 0;
+  background-color: #0056b3;
+  transition: width 0.3s ease;
+}
+
+/* Linha cresce no hover */
+.nav-link:hover::after,
+footer a:hover::after {
+  width: 100%;
+}
+
+/* Muda cor do texto para azul no hover */
+.nav-link:hover,
+footer a:hover {
+  color: #0056b3 ;
+}
+
+/* --- RESET PARA ÍCONES (LOGIN E CARRINHO) --- */
+/* Remove a linha azul e mantém a cor branca fixa para a classe nav-icon-ajuste */
+.nav-icon-ajuste::after {
+  display: none !important;
+}
+
+.nav-icon-ajuste,
+.nav-icon-ajuste:hover,
+.nav-icon-ajuste:focus,
+.nav-icon-ajuste.show {
+  color: #ffffff !important;
+  background: transparent !important;
+  text-decoration: none !important;
+  letter-spacing: normal !important;
+}
+
+/* Efeito de zoom suave apenas nos ícones */
+.nav-icon-ajuste:hover i {
+  transform: scale(1.1);
+  transition: 0.2s;
+}
+
+/* --- CONFIGURAÇÃO DA BARRA (FIXA) --- */
+header,
+.navbar {
+  position: fixed !important;
+  top: 0;
+  width: 100%;
+  z-index: 2000 !important;
+}
+
+.bg-black {
+  background-color: rgba(0, 0, 0, 0.3) !important;
+  backdrop-filter: blur(5px);
+}
+
+/* --- RESPONSIVIDADE (MOBILE) --- */
+@media (max-width: 991px) {
+  .navbar {
+    background-color: rgba(0, 0, 0, 0.7) !important;
+    backdrop-filter: blur(10px);
+  }
+
+  .img-logo-topo {
+    height: 32px !important;
+  }
+
+  .navbar .container {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 0 10px !important;
+  }
+
+  .navbar-collapse {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.9) !important;
+    padding: 20px;
+    z-index: 2001 !important;
+    border-top: 1px solid #222;
+  }
+
+  .navbar-nav .nav-link {
+    display: table !important;
+    margin: 0 auto;
+    padding: 10px 0;
+    color: #fff !important;
+  }
+}
+
+/* ================================== FIM TOPO ============================================================ */
+/* ================================== BANNER ============================================================ */
+
+/* Container Principal do Banner */
+.banner-home {
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: #000;
+  margin-top: -86px;
+}
+
+/* A Imagem de Fundo */
+.banner-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../img/fundobanner2.png");
+  background-size: cover;
+  background-position: center bottom;
+  z-index: 1;
+  background-repeat: no-repeat;
+}
+
+/* Garante que o conteúdo (busca) fique na frente da imagem */
+.container-conteudo {
+  position: relative;
+  z-index: 2;
+  padding-top: 270px; /* Mantém a posição que você já tinha ajustado */
+}
+
+/* Garante o arredondamento e o efeito de vidro no formulário */
+.search-box-container form {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  /* backdrop-filter: blur(10px); */
+  /* -webkit-backdrop-filter: blur(10px); */
+  /* border: 1px solid rgba(255, 255, 255, 0.2); */
+  border-radius: 50px !important;
+  transition: all 0.3s ease;
+  margin-top: 600px;
+}
+
+/* Efeito ao clicar para digitar (Focus) */
+.search-box-container form:focus-within {
+  background-color: rgba(255, 255, 255, 1) !important;
+  box-shadow: 0 8px 32px rgba(205, 34, 31, 0.2);
+}
+
+/* Ajustes para Mobile */
+@media (max-width: 991px) {
+  .container-conteudo {
+    padding-top: 150px !important; /* Sobe a busca no celular para não cobrir o carro */
+  }
+
+  .search-box-container form {
+    height: 55px;
+    margin: 0 15px; /* Evita que a barra cole nas beiradas do celular */
+  }
+
+  .search-box-container input {
+    font-size: 0.95rem;
+  }
+}
+
+/* --- AJUSTES ESPECÍFICOS PARA CELULAR --- */
+@media (max-width: 768px) {
+  /* 1. Ajuste do Banner (Carro por inteiro) */
+  .banner-home {
+    min-height: 70vh !important; /* Aumentamos para dar mais espaço no meio */
+    padding-top: 100px !important; /* Empurra o conjunto todo para baixo do menu */
+    border: none !important; /* Tenta remover o risquinho se for borda */
+    box-shadow: none !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centraliza o conteúdo no meio da seção */
+  }
+
+  .banner-bg {
+    background-size: contain !important;
+    background-position: center 30% !important; /* Sobe um pouco o carro dentro da div */
+    height: 100%;
+    /* Remove o "risquinho" que pode ser sobra da imagem ou borda */
+    outline: none !important;
+  }
+
+  .container-conteudo {
+    padding-top: 0 !important; /* Resetamos o padding antigo */
+    margin-top: 100px !important; /* Espaço pequeno entre o carro e a barra */
+    width: 100%;
+  }
+
+  .banner-home::after,
+  .banner-home::before {
+    display: none !important; /* Remove decorações que criam linhas */
+  }
+}
+
+/* ================================= FIM BANNER ============================================================ */
+/* ================================== DIFERENCIAIS  ============================================================ */
+
+.secao-diferenciais {
+  background-color: #000;
+}
+
+.titulo-diferenciais {
+  font-size: 2rem;
+  letter-spacing: 1px;
+}
+
+.card-diferencial {
+  position: relative;
+  height: 180px; /* Altura fixa para os cards ficarem iguais */
+  background-size: cover;
+  background-position: center;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  border: none !important; /* Remove qualquer borda padrão */
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+/* Camada vermelha (Overlay) */
+.card-diferencial::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Gradiente que deixa o fundo avermelhado e escuro */
+  background: linear-gradient(rgba(139, 0, 0, 0.75), rgba(40, 0, 0, 0.9));
+  z-index: 1;
+}
+
+.conteudo-card {
+  position: relative;
+  z-index: 2; /* Fica acima do vermelho */
+  text-align: center;
+}
+
+.card-diferencial p {
+  color: #fff;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 0;
+  line-height: 1.2;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); /* Sombra para ler melhor */
+}
+
+.card-diferencial:hover {
+  transform: scale(1.03); /* Leve zoom no card */
+}
+
+.secao-diferenciais {
+  background-color: #000;
+  height: 610px; /* A altura que você pediu */
+  display: flex; /* Ativa o Flexbox */
+  align-items: center; /* Centraliza os cards verticalmente dentro dos 610px */
+  justify-content: center; /* Centraliza horizontalmente */
+  padding: 0; /* Remove paddings que possam esticar além dos 610px */
+}
+
+/* Mantendo os cards no tamanho original, mas com o novo estilo de imagem */
+.card-diferencial {
+  position: relative;
+  height: 180px; /* O tamanho atual/original que você quer manter */
+  background-size: cover;
+  background-position: center;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  border: none !important;
+  transition: transform 0.3s ease;
+}
+
+/* Camada vermelha por cima (Overlay) */
+.card-diferencial::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(rgba(139, 0, 0, 0.7), rgba(0, 0, 0, 0.8));
+  z-index: 1;
+}
+
+.conteudo-card {
+  position: relative;
+  z-index: 2;
+}
+
+.card-diferencial p {
+  color: #fff;
+  font-weight: 600;
+  margin-bottom: 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+@media (max-width: 768px) {
+  .secao-diferenciais {
+    height: auto !important; /* ESSENCIAL: Libera a altura fixa de 610px */
+    padding-top: 0px !important;
+    padding-bottom: 50px !important;
+    display: block !important; /* Muda de flex para bloco para empilhar certo */
+  }
+
+  .card-diferencial {
+    height: 200px !important; /* Ajusta a altura dos cards vermelhos no celular */
+    margin-bottom: 15px;
+  }
+
+  .titulo-diferenciais {
+    font-size: 1.5rem !important;
+    /* margin-bottom: 30px !important; */
+    margin-top: 8px;
+  }
+}
+
+/* ================================== FIM DIFERENCIAIS ============================================================ */
+
+/* ============================== SERVIÇOS (830px + OUTLINE) ============================== */
+
+.secao-servicos {
+  background-color: #fff;
+  height: 830px; /* Altura que você solicitou */
+  display: flex; /* Flexbox para alinhar o conteúdo */
+  align-items: center; /* Centraliza os cards verticalmente nos 830px */
+  padding: 0;
+}
+
+/* Container interno para garantir que o título e os cards fiquem juntos */
+.secao-servicos .container {
+  width: 100%;
+}
+
+.card-servico {
+  background-color: #fff;
+  border: 1px solid #e0e0e0; /* O "risco" de contorno cinza */
+  border-radius: 10px;
+  height: 180px; /* Mantendo o tamanho original do card */
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px; /* Espaçamento entre as linhas de cards */
+}
+
+.card-servico:hover {
+  transform: scale(1.05);
+  border-color: #cd221f; /* Borda fica vermelha no hover */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+/* Estilo do ícone e texto para o fundo claro */
+.icon-servico i {
+  color: #cd221f;
+  font-size: 2.5rem;
+  margin-bottom: 12px;
+}
+
+.card-servico h6 {
+  color: #000 !important; /* Letras pretas conforme solicitado */
+  font-weight: 700;
+  margin: 0;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .secao-servicos {
+    height: auto !important; /* ESSENCIAL: Libera a altura fixa de 830px */
+    padding-top: 50px !important;
+    padding-bottom: 50px !important;
+    display: block !important;
+  }
+
+  .card-servico {
+    height: 150px !important; /* Cards brancos um pouco menores no mobile */
+    margin-bottom: 15px;
+  }
+
+  .secao-servicos h2 {
+    font-size: 1.5rem !important; /* Diminui o título para não quebrar em 3 linhas */
+    margin-bottom: 30px !important;
+  }
+}
+
+/* ===================================== FIM SERVIÇOS ===================================== */
+
+/* ===================================== MARCAS (680px) ============================================================================ */
+
+/* A Seção que envolve o slider */
+.secao-marcas {
+  background-color: #000;
+  height: 680px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; /* ESSENCIAL: Impede que as logos espalhem pela tela */
+}
+
+.secao-marcas .container {
+  position: relative;
+  overflow: visible; /* Permite que o zoom aconteça aqui dentro */
+}
+
+/* Container das Marcas */
+.slider-marcas {
+  margin: 0 -10px;
+}
+
+/* O bloco cinza onde fica a logo */
+.slider-marcas .rounded {
+  background-color: #e4e4e4 !important;
+  height: 120px;
+  margin: 0 10px; /* Espaçamento entre os cards */
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease-in-out;
+  border: 1px solid transparent;
+}
+
+.slider-marcas .rounded:hover {
+  background-color: #ffffff !important;
+  transform: scale(1.08); /* Zoom centralizado */
+  border-color: #cd221f;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  z-index: 99;
+  position: relative;
+}
+
+/* Ajuste das imagens */
+.slider-marcas img {
+  max-height: 60px;
+  max-width: 80%;
+  width: auto;
+  filter: grayscale(100%) brightness(0.8); /* P&B elegante */
+  opacity: 0.6;
+  transition: all 0.3s ease;
+}
+
+.slider-marcas .rounded:hover img {
+  filter: grayscale(0%) brightness(1); /* Ganha cor real no hover */
+  opacity: 1;
+}
+
+.slider-marcas {
+  padding: 20px 0; /* Cria um espaço no topo e embaixo dentro do slider */
+}
+
+.slider-marcas .slick-list {
+  padding: 20px 0; /* Espaço para o card expandir no topo/base */
+}
+
+/* ===================================== FIM MARCAS ============================================================================ */
+
+/* ================================== DESTAQUE ================================================================================== */
+
+.card-produto {
+  transition: all 0.3s ease;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.card-produto:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Estilização do botão de compra */
+.card-produto .btn-danger {
+  background-color: #dc3545;
+  border: none;
+  transition: background 0.3s;
+}
+
+.card-produto .btn-danger:hover {
+  background-color: #b02a37;
+}
+
+/* Preço em destaque */
+.card-produto .fs-4 {
+  color: #212529;
+  letter-spacing: -0.5px;
+}
+
+/* ================================== FIM DESTAQUE ================================================================================== */
+
+/* ================================== RELATOS ================================================================================== */
+
+/* Estilizando as setas do Slick (Relatos) */
+.slider-relatos .slick-prev,
+.slider-relatos .slick-next {
+  width: 40px;
+  height: 40px;
+  z-index: 10;
+}
+
+.slider-relatos .slick-prev:before,
+.slider-relatos .slick-next:before {
+  font-size: 40px;
+  color: #555; /* Cor cinza das setas do layout */
+  opacity: 0.8;
+}
+
+.slider-relatos .slick-prev {
+  left: -50px;
+}
+.slider-relatos .slick-next {
+  right: -50px;
+}
+
+/* ======================================= FIM RELATOS =============================================================================== */
+
+/* ======================================== SOBRE ====================================================================================== */
+.sobre-secao {
+  position: relative;
+  background-color: #e9e9e9;
+  overflow: hidden;
+  width: 100%;
+}
+
+/* --- REGRAS PARA COMPUTADOR (DESKTOP) --- */
+@media (min-width: 992px) {
+  .sobre-secao {
+    padding: 80px 0;
+  }
+
+  .diagonal-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40%; /* Ajuste do fundo preto no PC */
+    height: 100%;
+    background-color: #000;
+    clip-path: polygon(0 0, 100% 0, 70% 100%, 0% 100%);
+    z-index: 1;
+  }
+
+  .img-carro-sobre {
+    position: relative;
+    z-index: 3;
+    transform: scale(1.3); /* Carro grande e imponente no PC */
+    left: -20px;
+    transition: transform 0.3s ease;
+  }
+
+  .custom-padding-texto {
+    padding-left: 100px !important; /* Afasta o texto do fundo preto */
+    z-index: 2;
+  }
+}
+
+/* --- REGRAS PARA CELULAR (MOBILE) --- */
+@media (max-width: 991px) {
+  .banner-home {
+    height: 60vh !important; /* Evita que o banner suma no mobile */
+    margin-top: 0 !important;
+  }
+
+  .sobre-secao {
+    display: flex;
+    flex-direction: column;
+    padding-top: 0 !important;
+  }
+
+  .diagonal-bg {
+    position: relative; /* No mobile ele vira um bloco no topo */
+    width: 100%;
+    height: 280px;
+    background-color: #000;
+    clip-path: none; /* Remove o corte inclinado no mobile */
+    z-index: 1;
+  }
+
+  .img-carro-sobre {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1) !important;
+    max-width: 85%;
+    z-index: 5;
+    margin-top: -150px; /* Ajuste para posicionar melhor o carro no mobile */
+  }
+
+  .sobre-secao .row {
+    min-height: auto !important;
+    margin-top: 0;
+    position: relative;
+    z-index: 10;
+  }
+
+  .custom-padding-texto {
+    padding: 40px 20px !important;
+    text-align: center;
+  }
+}
+
+/* Garante a leitura do texto */
+.sobre-secao p {
+  text-align: justify;
+}
+
+/* ==================================== FIM SOBRE ======================================================================== */
+
+/* ====================================== LOCALIZAÇÃO =================================================================== */
+/* Container personalizado para forçar os 1400px */
+.container-custom-mapa {
+  width: 100%;
+  max-width: 1400px;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.mapa-container {
+  border-radius: 20px;
+  overflow: hidden;
+  border: 5px solid #fff; /* Sua borda branca atual */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease;
+}
+
+/* Efeito opcional: leve zoom ao passar o mouse */
+.mapa-container:hover {
+  transform: scale(1.01);
+}
+
+.mapa-container iframe {
+  display: block;
+  width: 100%; /* Garante que ocupe os 1400px */
+}
+
+/* ======================================= RODAPE =========================================================================== */
+/* 1. Alvo específico: Links dentro das listas (ul) do footer */
+footer ul li a {
+  position: relative;
+  display: inline-block; /* Importante para a linha respeitar o tamanho do texto */
+  transition: color 0.3s ease;
+}
+
+/* 2. Cria a linha vermelha apenas para esses links */
+footer ul li a::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background-color: var(--cor-hover);
+  transition: width 0.3s ease;
+}
+
+/* 3. Ativa a linha no hover */
+footer ul li a:hover::after {
+  width: 100%;
+}
+
+/* 4. Segurança: Garante que a imagem da logo não receba NADA de hover */
+footer .col-md-3 img {
+  pointer-events: none; /* A logo deixa de reagir a interações de mouse */
+}
+
+/* ============================================== PAGINA QUEM SOMOS / SOBRE NÓS ============================================== */
+
+.quemsomos-layout {
+  overflow: hidden;
+}
+
+/* No Mobile, removemos o fundo dividido para o texto não ficar invisível */
+@media (max-width: 991px) {
+  .quemsomos-layout {
+    background: #e9ecef !important; /* Fundo sólido no celular */
+  }
+  .quemsomos-layout li {
+    color: #333 !important;
+  }
+}
+
+/* ===================================== PAGINA SOBRE ========================================================================== */
+
+/* Ajuste para Desktop (Mantém a diagonal) */
+@media (min-width: 992px) {
+  .fundo-diagonal-preto {
+    width: 45%;
+    clip-path: polygon(0 0, 100% 0, 80% 100%, 0% 100%);
+  }
+}
+
+/* Ajuste Crítico para Mobile */
+@media (max-width: 991px) {
+  .fundo-diagonal-preto {
+    width: 100% !important;
+    /* Diminuímos a altura para o preto ficar apenas atrás do carro */
+    height: 250px !important;
+    clip-path: none !important;
+  }
+
+  /* Empurra a logo e o texto para baixo, para entrarem na parte branca */
+  .ajuste-mobile-conteudo {
+    margin-top: 0px; /* Ajuste esse valor se precisar descer mais */
+  }
+
+  .logo-sobre-mobile {
+    max-height: 60px !important;
+    /* Garante que a logo tenha contraste se o fundo ainda for escuro */
+    filter: drop-shadow(0px 0px 2px rgba(255, 255, 255, 0.5));
+    max-width: 95%;
+  }
+}
+
+/* ============================================ FIM PAGINA SOBRE ======================================================================== */
+
+/* ============================================ PAGINA CONTATO MAPA ======================================================================== */
+
+/* Ajuste Geral para o Mapa */
+.contato-mapa {
+  line-height: 0;
+  margin-top: 76px; /* Padrão para Desktop */
+}
+
+@media (max-width: 991px) {
+  .contato-mapa {
+    height: 450px !important; /* Diminuí um pouco para não sobrar tanto espaço vazio */
+    margin-top: 48px !important;
+    position: relative;
+    overflow: hidden;
+    width: 100% !important;
+    padding: 0 !important; /* Remove qualquer espaço interno que cause o fundo preto */
+    background-color: #000;
+  }
+
+  /* 3. Força o mapa a preencher 100% da altura da div acima */
+  .contato-mapa iframe {
+    display: block !important; /* Remove respiros de linha */
+    width: 100% !important;
+    height: 450px !important; /* Force o iframe a ter a MESMA altura da div acima */
+    border: 0;
+  }
+  /* 4. Ajuste do Topo (Mantendo o que você já fez) */
+  header,
+  .navbar {
+    position: fixed !important;
+    top: 0;
+    width: 100%;
+    z-index: 1050 !important;
+  }
+}
+/* ====================================== PAGINA CONTATO FORMULARIO ============================================== */
+
+@media (max-width: 991px) {
+  .contato-formulario {
+    /* Aumentamos o tamanho para cobrir melhor o fundo no celular */
+    /* 'contain' garante que o carro apareça inteiro, ou use um valor maior como 150% */
+    background-size: auto 30% !important;
+
+    /* Centraliza a imagem no fundo para ela aparecer abaixo do formulário */
+    background-position: bottom center !important;
+
+    /* Aumenta o espaçamento interno para o carro não ficar colado no form */
+    padding-bottom: 150px !important;
+  }
+
+  .form-container {
+    /* Deixa o formulário um pouco mais transparente para o fundo aparecer */
+    background-color: rgba(255, 255, 255, 0.85) !important;
+  }
+}
+
+/* ===========================================PAGINA CARRINHO ======================================================= */
+
+/* --- CORREÇÃO DA SEÇÃO CARRINHO --- */
+
+main.bg-black {
+  /* Garante que a seção ocupe quase a tela toda */
+  min-height: 85vh !important;
+  display: flex;
+  flex-direction: column;
+  /* Centraliza o conteúdo verticalmente no espaço disponível */
+  justify-content: center;
+  padding-top: 100px; /* Espaço para o menu fixo */
+  padding-bottom: 50px;
+  background-color: #000 !important; /* Garante o fundo preto */
+}
+
+/* Centralização garantida do texto pequeno */
+.text-secondary {
+  color: #b0b0b0 !important;
+  width: 100%;
+  display: block;
+}
+
+/* Ajuste do botão para não ficar colado no texto em telas menores */
+.btn-lg {
+  margin-top: 5px;
+}
+
+/* Container que cria a borda cinza ao redor da tabela de cima */
+.tabela-pecas-container {
+  border: 1px solid #e4e4e4 !important; /* Cor cinza claro solicitada */
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 25px;
+}
+
+/* Linha divisória interna do cabeçalho da tabela */
+.tabela-pecas-container thead th {
+  border-bottom: 1px solid #e4e4e4 !important;
+  background-color: #0d0d0d;
+  color: #e4e4e4; /* Texto do cabeçalho acompanhando a cor */
+}
+
+/* Ajuste do Card de Resumo (Baixo) para ficar idêntico */
+.card.bg-dark {
+  background-color: #121212 !important;
+  border: 1px solid #e4e4e4 !important; /* Cor cinza claro solicitada */
+  border-radius: 8px;
+}
+
+/* Ajuste da linha divisória dentro do card de resumo */
+hr.border-secondary {
+  border-color: #e4e4e4 !important;
+  opacity: 0.3;
+}
+
+.container.my-5 {
+  /* Remove margens excessivas que podem empurrar o conteúdo para baixo */
+  margin-top: 20px !important;
+  margin-bottom: 20px !important;
+}
+
+/* 3. Garante que a tabela não cole no rodapé */
+.table-responsive {
+  margin-bottom: 30px;
+}
+
+@media (max-width: 768px) {
+  /* 1. Faz o fundo preto ocupar a tela toda, mesmo vazio */
+  main.bg-black {
+    min-height: 75vh !important; /* Força ocupar a altura da tela */
+    display: flex;
+    flex-direction: column;
+    padding-top: 0px !important; /* Espaço para o topo não cobrir o título */
+  }
+
+  /* 2. Centraliza o título "Meu Carrinho" */
+  h1.text-danger.fw-bold,
+  .titulo-carrinho {
+    text-align: center;
+    font-size: 1.8rem !important;
+    margin-bottom: 30px !important;
+  }
+
+  /* 3. Ajusta o card de "Carrinho Vazio" */
+  .alert.text-white {
+    margin: 0 15px !important; /* Dá um respiro nas laterais */
+    padding: 40px 20px !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* 4. Ajusta o botão "Voltar para Loja" */
+  .btn-danger,
+  .btn-voltar {
+    width: 90%; /* Deixa o botão mais largo e fácil de clicar no celular */
+    margin: 20px auto !important;
+    display: block !important;
+    padding: 12px !important;
+  }
+
+  /* 5. Empurra o rodapé para o final real da página */
+  footer,
+  .footer-container {
+    margin-top: auto !important;
+  }
+
+  .d-flex.flex-column.align-items-center {
+    align-items: center !important; /* Força o centro horizontal */
+    width: 100%;
+    padding: 0 15px; /* Evita que o botão cole nas bordas da tela */
+  }
+
+  .text-secondary {
+    display: block;
+    width: 100%;
+    text-align: start !important;
+  }
+
+  .btn-danger.btn-lg {
+    margin: 0 auto; /* Centraliza o bloco do botão */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* =========================================== FIM PAGINA CARRINHO ======================================================= */
+
+/* =========================================== PAGINA MEUS DADOS ======================================================= */
+
+@media (max-width: 768px) {
+  /* Empurra o formulário Meus Dados para baixo no celular */
+  main.main-content {
+    padding-top: 100px !important; /* Aumentamos para dar distância do menu */
+    padding-bottom: 50px !important;
+  }
+
+  /* Centraliza e dá espaço ao título da página */
+  .card-dados h2 {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 1.5rem !important;
+  }
+
+  /* Ajusta o texto de encerramento de conta para a cor #e4e4e4 */
+  .card-dados p.small {
+    color: #e4e4e4 !important;
+    text-align: center;
+  }
+}
+
+/* =========================================== FIM PAGINA MEUS DADOS ======================================================= */
+
+/* ======================================== PAGINA PAGAMENTO =============================================================== */
+
+/* Ajustes para Celular (Mobile) */
+@media (max-width: 576px) {
+  .main-content {
+    padding-top: 80px !important; /* Diminui o topo no celular */
+  }
+
+  .card {
+    padding: 15px !important; /* Reduz o espaço interno para sobrar mais pro formulário */
+    margin-left: 10px;
+    margin-right: 10px;
+    width: auto !important; /* Permite que as margens laterais funcionem */
+  }
+
+  /* Força o formulário do Mercado Pago a caber na tela */
+  #cardPaymentBrick_container {
+    width: 100% !important;
+    padding: 0 !important;
+  }
+}
+
+/* Garante que nada no site cause barra de rolagem lateral */
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* ======================================= FIM PAGINA PAGAMENTO =============================================================== */
+
+/* ======================================= PAGINA OBRIGADO =================================================================== */
+
+/* Estilo do Spinner (Círculo girando) */
+.spinner {
+  display: none; /* Escondido por padrão */
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
+  border-top-color: #000;
+  animation: spin 1s ease-in-out infinite;
+  margin-right: 10px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Isso precisa estar no estilo.css para a página não ficar branca */
+body {
+  background-color: #000 !important;
+  color: #fff !important;
+  margin: 0;
+  padding: 0;
+}
+
+.container-obrigado {
+  max-width: 600px;
+  margin: 100px auto;
+  border: 1px solid #444;
+  padding: 40px;
+  border-radius: 12px;
+  text-align: center;
+  background-color: #0d0d0d; /* Fundo do card */
+}
+
+.btn-voltar {
+  display: inline-block;
+  margin-top: 30px;
+  padding: 12px 35px;
+  background-color: #cd221f; /* Vermelho igual ao seu carrinho */
+  color: #e4e4e4; /* Escrita na cor solicitada */
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+  text-transform: uppercase; /* Deixa o texto em caixa alta para impor mais presença */
+  transition: all 0.3s ease;
+  border: 2px solid #cd221f;
+}
+
+.btn-voltar:hover {
+  background-color: transparent; /* Efeito de inversão */
+  color: #cd221f; /* Texto fica vermelho */
+  transform: scale(1.05); /* Leve aumento */
+}
+
+/* Quando o botão estiver carregando */
+.btn-loading {
+  pointer-events: none; /* Desativa cliques */
+  opacity: 0.8;
+}
+
+@media (max-width: 600px) {
+  body {
+    padding-top: 50px;
+  }
+  .container-obrigado {
+    margin: 0 15px;
+    padding: 20px;
+  }
+  h1 {
+    font-size: 2rem;
+  }
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: spin 1s ease-in-out infinite;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.btn-loading {
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+
+/* Banners internos */
+.banner-internas {
+  margin-top: -86px;
+  height: 78vh;
+  min-height: 420px;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.banner-servicos {
+  background-image: url("../img/bannerservicos.png");
+}
+
+.banner-sobre {
+  background-image: url("../img/bannersobre.png");
+}
+
+/* ================================= RESPONSIVIDADE GLOBAL ================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+img,
+svg,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Melhor escala para notebook menor (1366x768 e similares) */
+@media (max-width: 1366px) {
+  .container-conteudo {
+    padding-top: 180px;
+  }
+
+  .search-box-container form {
+    margin-top: 380px;
+  }
+
+  .secao-diferenciais,
+  .secao-servicos,
+  .secao-marcas {
+    height: auto;
+    min-height: 0;
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+}
+
+/* Tablet e mobile */
+@media (max-width: 991px) {
+  .main-content {
+    padding-top: 105px !important;
+    padding-bottom: 30px;
+  }
+
+  .banner-home {
+    min-height: 62vh !important;
+    margin-top: 0 !important;
+  }
+
+  .container-conteudo {
+    padding-top: 120px !important;
+  }
+
+  .search-box-container form {
+    margin-top: 0 !important;
+  }
+
+  .banner-internas {
+    height: 50vh !important;
+    min-height: 280px !important;
+    margin-top: 0 !important;
+    background-position: center center !important;
+  }
+
+  .secao-diferenciais,
+  .secao-servicos,
+  .secao-marcas {
+    height: auto !important;
+    min-height: 0 !important;
+    padding-top: 45px !important;
+    padding-bottom: 45px !important;
+  }
+
+  .slider-marcas .rounded {
+    height: 95px;
+  }
+
+  .slider-marcas img {
+    max-height: 44px;
+  }
+
+  .navbar .container {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  .navbar-collapse {
+    max-height: calc(100vh - 75px);
+    overflow-y: auto;
+  }
+
+  .navbar-nav .nav-item {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .navbar-nav .nav-link {
+    letter-spacing: 1px;
+    font-size: 0.85rem;
+  }
+
+  .table-responsive {
+    border-radius: 10px;
+  }
+
+  .table {
+    font-size: 0.9rem;
+  }
+
+  .card,
+  .card-dados,
+  .card.bg-dark {
+    border-radius: 12px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding-top: 90px !important;
+  }
+
+  .banner-home {
+    min-height: 56vh !important;
+  }
+
+  .search-box-container form {
+    height: 50px !important;
+    border-radius: 40px !important;
+  }
+
+  .search-box-container input {
+    font-size: 0.9rem;
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+
+  .secao-diferenciais .container,
+  .secao-servicos .container,
+  .secao-marcas .container,
+  .secao-localizacao .container,
+  .container-custom-mapa {
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
+
+  .card-diferencial,
+  .card-servico {
+    height: 150px !important;
+  }
+
+  .contato-mapa {
+    margin-top: 20px !important;
+  }
+
+  .contato-mapa,
+  .contato-mapa iframe {
+    height: 320px !important;
+  }
+
+  main.bg-black {
+    padding-top: 90px !important;
+  }
+
+  .tabela-pecas-container .table {
+    font-size: 0.85rem;
+  }
+
+  .tabela-pecas-container th,
+  .tabela-pecas-container td {
+    white-space: nowrap;
+  }
+
+  .container-obrigado {
+    margin-top: 80px !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .img-logo-topo {
+    height: 28px !important;
+  }
+
+  .main-content {
+    padding-top: 82px !important;
+  }
+
+  .banner-internas {
+    height: 42vh !important;
+    min-height: 230px !important;
+  }
+
+  .table {
+    font-size: 0.82rem;
+  }
+
+  .btn-lg,
+  .btn {
+    white-space: normal;
+  }
+
+  .btn-painel {
+    font-size: 0.72rem;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+}
+
+/* Meus Pedidos - melhoria mobile */
+@media (max-width: 768px) {
+  .meus-pedidos-page .container {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  .meus-pedidos-wrapper {
+    border: none !important;
+    background: transparent !important;
+  }
+
+  .pedidos-table {
+    border: 0 !important;
+    background: transparent !important;
+  }
+
+  .pedidos-table colgroup,
+  .pedidos-table thead {
+    display: none !important;
+  }
+
+  .pedidos-table,
+  .pedidos-table tbody,
+  .pedidos-table tr,
+  .pedidos-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .pedidos-table tr {
+    border: 1px solid #2e3640 !important;
+    border-radius: 12px;
+    background: linear-gradient(180deg, #151a20 0%, #12161b 100%);
+    padding: 10px 12px;
+    margin-bottom: 10px;
+  }
+
+  .pedidos-table td {
+    border: 0 !important;
+    padding: 7px 0 !important;
+    margin: 0 !important;
+    text-align: right !important;
+    white-space: normal !important;
+  }
+
+  .pedidos-table td::before {
+    content: attr(data-label);
+    float: left;
+    color: #9aa5b1;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    font-weight: 700;
+  }
+
+  .pedidos-table td[data-label="Nº Pedido"] {
+    font-size: 1rem;
+    color: #ffffff;
+  }
+
+  .pedidos-table td[data-label="Status"] .badge {
+    font-size: 0.72rem;
+    padding: 0.45rem 0.8rem !important;
+  }
+
+  .pedidos-table td[data-label="Ações"] .btn {
+    width: 100%;
+    margin-top: 4px;
+  }
+}
+
+/* Ajuste do bloco "Ainda nao e cliente?/Ja possui conta?" em telas pequenas */
+.auth-switch {
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .auth-switch .text-secondary,
+  .auth-switch .auth-switch-link {
+    display: block;
+    width: 100%;
+    text-align: center !important;
+  }
+}
+
+/* Detalhes do Pedido - base desktop */
+.detalhes-card .card-body {
+  padding: 1.25rem;
+}
+
+.detalhes-data-realizacao {
+  color: #cfd6de;
+  font-size: 1rem;
+  border-bottom: 1px solid #303844;
+  padding-bottom: 0.75rem;
+  margin-bottom: 1rem !important;
+}
+
+.detalhes-data-realizacao strong {
+  color: #f1f4f8;
+}
+
+.detalhes-table {
+  table-layout: fixed;
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.detalhes-head-row {
+  color: #b7c0cb;
+}
+
+.detalhes-table thead th {
+  border-color: #2f3741 !important;
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+
+.detalhes-table tbody td {
+  border-color: #2a3139 !important;
+  vertical-align: middle;
+}
+
+.detalhes-table th:nth-child(2),
+.detalhes-table td:nth-child(2),
+.detalhes-table th:nth-child(3),
+.detalhes-table td:nth-child(3),
+.detalhes-table th:nth-child(4),
+.detalhes-table td:nth-child(4) {
+  text-align: right;
+}
+
+.detalhes-item-cell span {
+  color: #f1f4f8;
+  font-weight: 500;
+}
+
+.detalhes-table tfoot tr {
+  background: #131922;
+}
+
+.detalhes-total-label {
+  color: #c6ced8 !important;
+  font-weight: 600;
+}
+
+/* Detalhes do Pedido - melhoria mobile */
+@media (max-width: 768px) {
+  .detalhes-pedido-page {
+    padding-top: 92px !important;
+    margin-top: 0 !important;
+  }
+
+  .detalhes-pedido-page .card {
+    border-radius: 12px !important;
+  }
+
+  .detalhes-pedido-header {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 8px;
+  }
+
+  .detalhes-pedido-header h4 {
+    font-size: 0.95rem;
+    line-height: 1.25;
+  }
+
+  .detalhes-data-realizacao {
+    font-size: 0.88rem;
+    margin-bottom: 0.8rem !important;
+  }
+
+  .detalhes-table colgroup {
+    display: none;
+  }
+
+  .detalhes-pedido-wrapper {
+    border: 1px solid #2e3640;
+    border-radius: 10px;
+  }
+
+  .detalhes-table {
+    margin-bottom: 0;
+  }
+
+  .detalhes-table thead {
+    display: none;
+  }
+
+  .detalhes-table,
+  .detalhes-table tbody,
+  .detalhes-table tr,
+  .detalhes-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .detalhes-table tbody tr {
+    border-bottom: 1px solid #2a3139;
+    padding: 10px 12px;
+    background: linear-gradient(180deg, #171d24 0%, #131920 100%);
+  }
+
+  .detalhes-table td {
+    border: 0 !important;
+    padding: 6px 0 !important;
+    text-align: right !important;
+    font-size: 0.86rem;
+  }
+
+  .detalhes-table td[data-label="Item"] {
+    text-align: left !important;
+  }
+
+  .detalhes-table td::before {
+    content: attr(data-label);
+    float: left;
+    color: #9aa5b1;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    font-weight: 700;
+  }
+
+  .detalhes-item-cell {
+    justify-content: flex-start;
+    gap: 8px;
+  }
+
+  .detalhes-item-cell img {
+    width: 42px !important;
+    height: 42px !important;
+    margin-right: 0 !important;
+  }
+
+  .detalhes-table tfoot tr {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    background: #10151a;
+    border-top: 1px solid #2e3640;
+  }
+
+  .detalhes-total-label,
+  .detalhes-total-value {
+    display: block !important;
+    width: auto !important;
+    border: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    text-align: initial !important;
+  }
+
+  .detalhes-total-label {
+    font-size: 0.78rem;
+    color: #b3bcc7 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+  }
+
+  .detalhes-total-value {
+    font-size: 1.1rem !important;
+  }
+
+  .detalhes-btn-voltar {
+    width: 100%;
+  }
+}
