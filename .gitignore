@@ -20,6 +20,7 @@ logs/
 tmp/
 temp/
 *.tmp
+log_frenet.txt
 
 # ============================================
 # UPLOADS (arquivos do usuário)
