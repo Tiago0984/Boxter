@@ -56,7 +56,10 @@ function traduzirStatus($status)
     <link rel="stylesheet" href="admin-responsive.css">
 
     <style>
-        /* 1. Fundo Preto Total (Padrão Estoque) */
+        /* ================================
+   BASE GLOBAL
+================================ */
+
         html,
         body {
             background-color: #000 !important;
@@ -71,7 +74,10 @@ function traduzirStatus($status)
             color: #bbbbbb !important;
         }
 
-        /* 2. Menu Superior (Padrão Navbar que você mandou) */
+        /* ================================
+   NAVBAR
+================================ */
+
         .navbar {
             background-color: #000 !important;
             margin-bottom: 0 !important;
@@ -89,7 +95,10 @@ function traduzirStatus($status)
             color: #0056b3 !important;
         }
 
-        /* 3. Estilo da Seção e Tabela (Padrão Admin) */
+        /* ================================
+   ADMIN SECTION
+================================ */
+
         .admin-section {
             background-color: #000;
             min-height: 100vh;
@@ -102,10 +111,7 @@ function traduzirStatus($status)
             border-radius: 0;
         }
 
-        .card-boxter h2 {
-            color: #ffffff !important;
-        }
-
+        .card-boxter h2,
         .card-boxter h5 {
             color: #ffffff !important;
         }
@@ -122,6 +128,10 @@ function traduzirStatus($status)
             letter-spacing: 1px;
             padding: 12px;
         }
+
+        /* ================================
+   TABELA
+================================ */
 
         .tabela-boxter {
             background-color: #111;
@@ -146,11 +156,39 @@ function traduzirStatus($status)
             padding: 12px;
         }
 
-        .text-valor-total {
-            color: #28a745;
-            font-size: 1.4rem;
-            font-weight: bold;
+        .tabela-boxter tbody tr:hover {
+            background-color: #151515;
+            transition: 0.2s;
         }
+
+        /* ================================
+   TOTAL
+================================ */
+
+        .total-label {
+            color: #ffffff !important;
+            font-weight: 600;
+        }
+
+        .total-value {
+            font-weight: bold;
+            font-size: 1.3rem;
+            color: #00ff00;
+        }
+
+        .total-box {
+            background-color: #000;
+            border-top: 2px solid #cd221f;
+            padding: 18px 25px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* ================================
+   BOTÕES
+================================ */
 
         .btn-boxter-border {
             border: 1px solid #444;
@@ -165,16 +203,9 @@ function traduzirStatus($status)
             color: #000;
         }
 
-        .detalhes-texto {
-            color: #e4e4e4 !important;
-        }
-
-        .detalhes-label {
-            color: #cd221f;
-            /* Mantém o rótulo em vermelho para destaque */
-            font-weight: bold;
-            margin-right: 5px;
-        }
+        /* ================================
+   PEDIDO HEADER
+================================ */
 
         .pedido-header {
             display: flex;
@@ -188,12 +219,12 @@ function traduzirStatus($status)
             line-height: 1.2;
         }
 
-        .itens-wrapper {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-        }
+        /* ================================
+   RESPONSIVIDADE
+================================ */
 
         @media (max-width: 991px) {
+
             .admin-section {
                 padding-top: 20px;
             }
@@ -217,10 +248,6 @@ function traduzirStatus($status)
                 letter-spacing: 0.5px;
             }
 
-            .itens-wrapper table {
-                min-width: 620px;
-            }
-
             .tabela-boxter th,
             .tabela-boxter td {
                 font-size: 0.85rem;
@@ -228,133 +255,64 @@ function traduzirStatus($status)
                 white-space: nowrap;
             }
 
-            .text-valor-total {
-                font-size: 1.05rem;
-            }
-
-            .btn-imprimir {
-                width: 100%;
-                padding-left: 0 !important;
-                padding-right: 0 !important;
-                border-radius: 8px !important;
-                font-size: 0.9rem;
-            }
         }
 
-        @media (max-width: 767.98px) {
-            .itens-wrapper {
-                overflow: visible;
-            }
+        /* MOBILE TABLE LAYOUT */
 
-            .itens-wrapper table {
-                min-width: 100%;
+        @media (max-width: 768px) {
+
+            .table-responsive {
+                overflow-x: auto;
             }
 
             .tabela-boxter {
-                border: 0;
-                background: transparent;
+                min-width: 600px;
             }
 
-            .tabela-boxter thead {
-                display: none;
+            .total-box {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
             }
 
-            .tabela-boxter tbody,
-            .tabela-boxter tbody tr,
-            .tabela-boxter tbody td,
-            .tabela-boxter tfoot,
-            .tabela-boxter tfoot tr,
-            .tabela-boxter tfoot td {
-                display: block;
-                width: 100%;
+            .btn-imprimir {
+                width: 90%;
+                max-width: 320px;
             }
 
-            .tabela-boxter tbody tr {
-                background-color: #111;
-                border: 1px solid #333;
-                border-radius: 10px;
-                margin: 10px 10px 0;
-                overflow: hidden;
+            .tabela-boxter td.ps-4,
+            .tabela-boxter th.ps-4 {
+                padding-left: 12px !important;
             }
 
-            .tabela-boxter tbody td {
-                text-align: left !important;
-                padding: 10px 14px !important;
-                border: 0;
-                border-bottom: 1px solid #2a2a2a;
-                white-space: normal;
-            }
-
-            .tabela-boxter tbody td:last-child {
-                border-bottom: 0;
-            }
-
-            .tabela-boxter tbody td::before {
-                content: attr(data-label);
-                display: block;
-                margin-bottom: 2px;
-                font-size: 0.72rem;
-                font-weight: 700;
-                color: #9aa0a6;
-                text-transform: uppercase;
-                letter-spacing: 0.04em;
-            }
-
-            .tabela-boxter tfoot tr {
-                background-color: #080808;
-                border: 1px solid #333;
-                border-radius: 10px;
-                margin: 10px;
-                padding: 12px 14px;
-            }
-
-            .tabela-boxter tfoot td {
-                border: 0;
-                padding: 0 !important;
-                text-align: left !important;
-                white-space: normal;
-            }
-
-            .tabela-boxter .total-label {
-                color: #e4e4e4;
-                margin-bottom: 4px;
-            }
         }
 
-        @media (max-width: 576px) {
-            .container.pt-5 {
-                padding-top: 0.75rem !important;
-            }
-
-            .pedido-header h2 {
-                font-size: 1rem !important;
-            }
+        .btn-imprimir-wrapper {
+            text-align: center;
+            margin-top: 20px;
         }
+
+        /* ================================
+   PRINT
+================================ */
 
         @media print {
 
-            /* Esconde o Header (Navegação) */
             header,
             .navbar,
             .nav-container,
-            .boxter-admin-header {
-                display: none !important;
-            }
-
-            /* Esconde os botões Voltar e Imprimir Etiqueta */
+            .boxter-admin-header,
             .btn,
             button,
-            a.btn-outline-secondary,
+            a,
             .no-print {
                 display: none !important;
             }
 
-            /* Esconde o rodapé da página (URL e data que o navegador coloca) */
             @page {
                 margin: 0.5cm;
             }
 
-            /* Remove sombras e bordas coloridas para economizar tinta e focar no conteúdo */
             body {
                 background-color: #fff !important;
                 color: #000 !important;
@@ -368,45 +326,7 @@ function traduzirStatus($status)
                 margin: 0 !important;
                 padding: 0 !important;
             }
-        }
 
-        .tabela-boxter tbody tr:hover {
-            background-color: #151515;
-            transition: 0.2s;
-        }
-
-        .linha-total {
-            background-color: #000 !important;
-            border-top: 2px solid #cd221f;
-            height: 70px;
-            /* aumenta a altura da faixa */
-        }
-
-        .linha-total td {
-            vertical-align: middle !important;
-            /* centraliza verticalmente */
-        }
-
-
-        .total-label {
-            color: #ffffff !important;
-            font-weight: 600;
-        }
-
-        .total-value {
-            font-weight: bold;
-            font-size: 1.3rem;
-            color: #00ff00;
-        }
-
-        .total-box {
-            background-color: #000;
-            border-top: 2px solid #cd221f;
-            padding: 18px 25px;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            gap: 15px;
         }
     </style>
 </head>
@@ -558,78 +478,87 @@ function traduzirStatus($status)
                         <div class="cabecalho-vermelho">PRODUTOS DO PEDIDO</div>
 
                         <div class="card-body p-0">
-                            <table class="table tabela-boxter mb-0">
-                                <thead>
-                                    <tr>
-                                        <th class="text-start ps-4">Produto</th>
-                                        <th>Qtd</th>
-                                        <th>Valor Unit.</th>
-                                        <th>Subtotal</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-
-                                    <?php
-                                    $totalCalculado = 0;
-                                    while ($item = mysqli_fetch_assoc($res_itens)):
-
-                                        $subtotal = $item['qtde_item'] * $item['preco_unit_item'];
-                                        $totalCalculado += $subtotal;
-                                    ?>
-
+                            <div class="table-responsive">
+                                <table class="table tabela-boxter mb-0">
+                                    <thead>
                                         <tr>
-                                            <td class="text-start ps-4 fw-semibold">
-                                                <?php echo $item['nome_peca']; ?>
-                                            </td>
-                                            <td><?php echo $item['qtde_item']; ?></td>
-                                            <td>R$ <?php echo number_format($item['preco_unit_item'], 2, ',', '.'); ?></td>
-                                            <td style="color:#00ff00;">
-                                                R$ <?php echo number_format($subtotal, 2, ',', '.'); ?>
-                                            </td>
+                                            <th class="text-start ps-4">Produto</th>
+                                            <th>Qtd</th>
+                                            <th>Valor Unit.</th>
+                                            <th>Subtotal</th>
                                         </tr>
+                                    </thead>
+                                    <tbody>
 
-                                    <?php endwhile; ?>
+                                        <?php
+                                        $totalCalculado = 0;
+                                        while ($item = mysqli_fetch_assoc($res_itens)):
 
-                                </tbody>
-                            </table>
+                                            $subtotal = $item['qtde_item'] * $item['preco_unit_item'];
+                                            $totalCalculado += $subtotal;
+                                        ?>
+
+                                            <tr>
+                                                <td class="text-start ps-4 fw-semibold" data-label="Produto">
+                                                    <?php echo $item['nome_peca']; ?>
+                                                </td>
+
+                                                <td data-label="Qtd">
+                                                    <?php echo $item['qtde_item']; ?>
+                                                </td>
+
+                                                <td data-label="Valor Unit.">
+                                                    R$ <?php echo number_format($item['preco_unit_item'], 2, ',', '.'); ?>
+                                                </td>
+
+                                                <td style="color:#00ff00;" data-label="Subtotal">
+                                                    R$ <?php echo number_format($subtotal, 2, ',', '.'); ?>
+                                                </td>
+                                            </tr>
+
+                                        <?php endwhile; ?>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ⚫ TOTAL GRANDE -->
+                    <div style="background:#000; border-top:2px solid #cd221f; padding:20px; text-align:right;">
+
+                        <div style="font-size:1rem; margin-bottom:5px;">
+                            <span style="color:#ccc;">Subtotal Produtos:</span>
+                            <span style="color:#fff;">
+                                R$ <?php echo number_format($totalCalculado, 2, ',', '.'); ?>
+                            </span>
                         </div>
 
-                        <!-- ⚫ TOTAL GRANDE -->
-                        <div style="background:#000; border-top:2px solid #cd221f; padding:20px; text-align:right;">
+                        <div style="font-size:1rem; margin-bottom:10px;">
+                            <span style="color:#ccc;">Frete:</span>
+                            <span style="color:#fff;">
+                                R$ <?php echo number_format($pedido['valor_frete'], 2, ',', '.'); ?>
+                            </span>
+                        </div>
 
-                            <div style="font-size:1rem; margin-bottom:5px;">
-                                <span style="color:#ccc;">Subtotal Produtos:</span>
-                                <span style="color:#fff;">
-                                    R$ <?php echo number_format($totalCalculado, 2, ',', '.'); ?>
-                                </span>
-                            </div>
-
-                            <div style="font-size:1rem; margin-bottom:10px;">
-                                <span style="color:#ccc;">Frete:</span>
-                                <span style="color:#fff;">
-                                    R$ <?php echo number_format($pedido['valor_frete'], 2, ',', '.'); ?>
-                                </span>
-                            </div>
-
-                            <div style="font-size:1.5rem; font-weight:bold; color:#00ff00;">
-                                TOTAL GERAL:
-                                R$ <?php echo number_format($pedido['valor_total_pedido'], 2, ',', '.'); ?>
-                            </div>
-
+                        <div style="font-size:1.5rem; font-weight:bold; color:#00ff00;">
+                            TOTAL GERAL:
+                            R$ <?php echo number_format($pedido['valor_total_pedido'], 2, ',', '.'); ?>
                         </div>
 
                     </div>
+
                 </div>
             </div>
-
-            <!-- 🔘 AÇÕES -->
-            <div class="text-end mt-3">
-                <button onclick="window.print()" class="btn btn-danger btn-lg px-5 fw-bold">
-                    <i class="bi bi-printer"></i> IMPRIMIR ETIQUETA
-                </button>
-            </div>
-
         </div>
+
+        <!-- 🔘 AÇÕES -->
+        <div class="btn-imprimir-wrapper">
+            <a href="#" class="btn btn-danger btn-imprimir">
+                <i class="bi bi-printer"></i> IMPRIMIR ETIQUETA
+            </a>
+        </div>
+
     </div>
 </body>
 
