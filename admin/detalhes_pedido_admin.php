@@ -285,6 +285,11 @@ function traduzirStatus($status)
                 padding-left: 12px !important;
             }
 
+            .area-botao-imprimir {
+                text-align: center !important;
+            }
+
+
         }
 
         .btn-imprimir {
@@ -574,7 +579,7 @@ function traduzirStatus($status)
             </div>
             <!-- 🔘 AÇÕES -->
             <div class="row mt-4">
-                <div class="col-12 text-end">
+                <div class="col-12 area-botao-imprimir text-end">
                     <button type="button"
                         class="btn btn-imprimir"
                         onclick="window.print();">
