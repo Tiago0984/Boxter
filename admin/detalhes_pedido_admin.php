@@ -506,7 +506,8 @@ function traduzirStatus($status)
 
                                 <?php else: ?>
 
-                                    <div class="alert alert-warning text-center p-2 mb-0">
+                                    <div class="alert text-center p-2 mb-0"
+                                        style="background-color:#2a2a2a; color:#ffc107; border:1px solid #ffc107;">
                                         <i class="bi bi-exclamation-triangle"></i>
                                         Telefone não informado
                                     </div>
