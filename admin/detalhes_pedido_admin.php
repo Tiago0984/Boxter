@@ -337,6 +337,18 @@ function traduzirStatus($status)
                 padding: 0 !important;
             }
 
+            .table-responsive {
+                overflow: visible !important;
+            }
+
+            .table-responsive::-webkit-scrollbar {
+                display: none !important;
+            }
+
+            .tabela-boxter {
+                width: 100% !important;
+            }
+
         }
     </style>
 </head>
