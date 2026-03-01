@@ -121,26 +121,152 @@ $idCliente = (int)$_SESSION['cliente_id'];
 try {
 
     // 1️⃣ Calcula total
-    $valorTotal = calcular_totais($conn, $_SESSION['carrinho']);
+    $valorProdutos = $_SESSION['subtotal_produtos'] ?? calcular_totais($conn, $_SESSION['carrinho']);
+    $valorFrete = $_SESSION['valor_frete'] ?? 0.00;
+
+    $valorTotal = $valorProdutos + $valorFrete;
 
     // 2️⃣ Cria pedido ANTES do pagamento
     $conn->begin_transaction();
 
     $statusInicial = 'aguardando_pagamento';
 
+    // 🔎 Pega dados de entrega da sessão
+    $entrega = $_SESSION['entrega_temporaria'] ?? [];
+
+    $cep = $entrega['cep'] ?? null;
+    $logradouro = $entrega['logradouro'] ?? null;
+    $numero = $entrega['numero'] ?? null;
+    $complemento = $entrega['complemento'] ?? null;
+    $bairro = $entrega['bairro'] ?? null;
+    $cidade = $entrega['cidade'] ?? null;
+    $uf = $entrega['uf'] ?? null;
+
+    if (!empty($entrega['usar_cadastro'])) {
+
+        // Busca endereço do cliente no banco
+        $stmtCliente = $conn->prepare("
+    SELECT 
+        cep_cliente,
+        endereco_cliente,
+        numero_cliente,
+        complemento_cliente,
+        bairro_cliente,
+        cidade_cliente,
+        uf_cliente
+    FROM tbl_clientes
+    WHERE id_cliente = ?
+");
+
+        $stmtCliente->bind_param('i', $idCliente);
+        $stmtCliente->execute();
+        $resCliente = $stmtCliente->get_result();
+        $dadosCliente = $resCliente->fetch_assoc();
+        $stmtCliente->close();
+
+        if (!$dadosCliente) {
+            throw new RuntimeException("Endereço do cliente não encontrado.");
+        }
+
+        $cep = $dadosCliente['cep_cliente'] ?? null;
+        $logradouro = $dadosCliente['endereco_cliente'] ?? null;
+        $numero = $dadosCliente['numero_cliente'] ?? null;
+        $complemento = $dadosCliente['complemento_cliente'] ?? null;
+        $bairro = $dadosCliente['bairro_cliente'] ?? null;
+        $cidade = $dadosCliente['cidade_cliente'] ?? null;
+        $uf = $dadosCliente['uf_cliente'] ?? null;
+    } else {
+
+        // Usa endereço da sessão
+        $cep = $entrega['cep'] ?? null;
+        $logradouro = $entrega['logradouro'] ?? null;
+        $numero = $entrega['numero'] ?? null;
+        $complemento = $entrega['complemento'] ?? null;
+        $bairro = $entrega['bairro'] ?? null;
+        $cidade = $entrega['cidade'] ?? null;
+        $uf = $entrega['uf'] ?? null;
+    }
+
     $stmtPedido = $conn->prepare(
         "INSERT INTO tbl_pedido (
-            id_cliente,
-            data_pedido,
-            status_pedido,
-            valor_total_pedido
-        ) VALUES (?, NOW(), ?, ?)"
+        id_cliente,
+        data_pedido,
+        status_pedido,
+        valor_total_pedido,
+        valor_frete,
+        entrega_cep,
+        entrega_logradouro,
+        entrega_numero,
+        entrega_complemento,
+        entrega_bairro,
+        entrega_cidade,
+        entrega_uf
+    ) VALUES (?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
     );
 
-    $stmtPedido->bind_param('isd', $idCliente, $statusInicial, $valorTotal);
+    $stmtPedido->bind_param(
+        'isddsssssss',
+        $idCliente,
+        $statusInicial,
+        $valorTotal,
+        $valorFrete,
+        $cep,
+        $logradouro,
+        $numero,
+        $complemento,
+        $bairro,
+        $cidade,
+        $uf
+    );
+
     $stmtPedido->execute();
     $pedidoId = (int)$conn->insert_id;
     $stmtPedido->close();
+
+    // 2️⃣.1 - Salva os itens do pedido
+    $stmtItem = $conn->prepare("
+    INSERT INTO tbl_itens_pedido (
+        id_pedido,
+        id_peca,
+        qtde_item,
+        preco_unit_item
+    ) VALUES (?, ?, ?, ?)
+");
+
+    $stmtPreco = $conn->prepare("
+    SELECT preco_venda_peca 
+    FROM tbl_pecas 
+    WHERE id_peca = ?
+");
+
+    foreach ($_SESSION['carrinho'] as $idPeca => $qtd) {
+
+        // Busca preço atual da peça
+        $stmtPreco->bind_param('i', $idPeca);
+        $stmtPreco->execute();
+        $resPreco = $stmtPreco->get_result();
+        $peca = $resPreco->fetch_assoc();
+
+        if (!$peca) {
+            throw new RuntimeException("Peça não encontrada ao salvar item.");
+        }
+
+        $precoUnit = (float)$peca['preco_venda_peca'];
+
+        // Salva item
+        $stmtItem->bind_param(
+            'iiid',
+            $pedidoId,
+            $idPeca,
+            $qtd,
+            $precoUnit
+        );
+
+        $stmtItem->execute();
+    }
+
+    $stmtItem->close();
+    $stmtPreco->close();
 
     $conn->commit();
 
@@ -170,6 +296,9 @@ try {
         $stmtEstoque = $conn->prepare("UPDATE tbl_pecas SET estoque_peca = estoque_peca - ? WHERE id_peca = ?");
 
         foreach ($_SESSION['carrinho'] as $idPeca => $qtd) {
+
+            $idPeca = (int)$idPeca;
+            $qtd = (int)$qtd;
 
             $stmtPeca->bind_param('i', $idPeca);
             $stmtPeca->execute();

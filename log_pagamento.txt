@@ -13,3 +13,17 @@
 [28-Feb-2026 16:46:32 Europe/Berlin] ID TRANSACAO MP: 1345149719
 [28-Feb-2026 16:46:32 Europe/Berlin] =================================
 [28-Feb-2026 16:46:32 Europe/Berlin] LINHAS AFETADAS UPDATE: 1
+[28-Feb-2026 17:54:35 Europe/Berlin] ENTREGA SESSION:
+[28-Feb-2026 17:54:35 Europe/Berlin] Array
+(
+    [usar_cadastro] => 1
+)
+
+[28-Feb-2026 17:54:35 Europe/Berlin] Erro pagamento: The number of elements in the type definition string must match the number of bind variables
+[28-Feb-2026 18:00:23 Europe/Berlin] ENTREGA SESSION:
+[28-Feb-2026 18:00:23 Europe/Berlin] Array
+(
+    [usar_cadastro] => 1
+)
+
+[28-Feb-2026 18:11:19 Europe/Berlin] Erro pagamento: Unknown column 'cep' in 'field list'

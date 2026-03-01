@@ -27,8 +27,24 @@ $sql_itens = "SELECT i.*, p.nome_peca
               INNER JOIN tbl_pecas p ON i.id_peca = p.id_peca
               WHERE i.id_pedido = '$id_pedido'";
 $res_itens = mysqli_query($conn, $sql_itens);
+
+function traduzirStatus($status)
+{
+    $mapa = [
+        'approved'   => 'APROVADO',
+        'rejected'   => 'REPROVADO',
+        'pending'    => 'PENDENTE',
+        'in_process' => 'EM PROCESSAMENTO',
+        'cancelled'  => 'CANCELADO'
+    ];
+
+    return $mapa[$status] ?? strtoupper($status);
+}
+
+
 ?>
 <!DOCTYPE html>
+
 <html lang="pt-br">
 
 <head>
@@ -46,8 +62,13 @@ $res_itens = mysqli_query($conn, $sql_itens);
             background-color: #000 !important;
             margin: 0;
             padding: 0;
-            color: white;
+            color: #f1f1f1 !important;
             font-family: sans-serif;
+        }
+
+        .text-secondary,
+        small {
+            color: #bbbbbb !important;
         }
 
         /* 2. Menu Superior (Padrão Navbar que você mandou) */
@@ -79,6 +100,18 @@ $res_itens = mysqli_query($conn, $sql_itens);
             background-color: #111;
             border: 1px solid #333;
             border-radius: 0;
+        }
+
+        .card-boxter h2 {
+            color: #ffffff !important;
+        }
+
+        .card-boxter h5 {
+            color: #ffffff !important;
+        }
+
+        .card-boxter div {
+            color: #dddddd;
         }
 
         .cabecalho-vermelho {
@@ -336,6 +369,45 @@ $res_itens = mysqli_query($conn, $sql_itens);
                 padding: 0 !important;
             }
         }
+
+        .tabela-boxter tbody tr:hover {
+            background-color: #151515;
+            transition: 0.2s;
+        }
+
+        .linha-total {
+            background-color: #000 !important;
+            border-top: 2px solid #cd221f;
+            height: 70px;
+            /* aumenta a altura da faixa */
+        }
+
+        .linha-total td {
+            vertical-align: middle !important;
+            /* centraliza verticalmente */
+        }
+
+
+        .total-label {
+            color: #ffffff !important;
+            font-weight: 600;
+        }
+
+        .total-value {
+            font-weight: bold;
+            font-size: 1.3rem;
+            color: #00ff00;
+        }
+
+        .total-box {
+            background-color: #000;
+            border-top: 2px solid #cd221f;
+            padding: 18px 25px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 15px;
+        }
     </style>
 </head>
 
@@ -354,83 +426,210 @@ $res_itens = mysqli_query($conn, $sql_itens);
     </nav>
 
     <div class="admin-section">
-        <div class="container pt-5">
-            <div class="pedido-header mb-4">
-                <h2 class="fw-bold m-0"><i class="bi bi-receipt"></i> DETALHES DO PEDIDO #<?php echo $id_pedido; ?></h2>
-                <a href="pedidos.php" class="btn btn-outline-secondary d-print-none">VOLTAR</a>
+        <div class="container pt-4">
+
+            <!-- 🔴 BLOCO 1 - IDENTIFICAÇÃO DO PEDIDO -->
+            <div class="card card-boxter mb-4">
+                <div class="card-body d-flex justify-content-between align-items-center flex-wrap">
+
+                    <div>
+                        <h2 class="fw-bold mb-1">
+                            PEDIDO #<?php echo $pedido['id_pedido']; ?>
+                        </h2>
+                        <small class="text-secondary">
+                            Data: <?php echo date('d/m/Y H:i', strtotime($pedido['data_pedido'])); ?>
+                        </small>
+                    </div>
+
+                    <div class="text-end">
+                        <?php
+                        $status = strtolower($pedido['status_pedido']);
+
+                        switch ($status) {
+                            case 'approved':
+                                $corStatus = '#28a745'; // verde
+                                break;
+
+                            case 'rejected':
+                            case 'cancelled':
+                                $corStatus = '#dc3545'; // vermelho
+                                break;
+
+                            case 'pending':
+                            case 'in_process':
+                                $corStatus = '#ffc107'; // amarelo
+                                break;
+
+                            default:
+                                $corStatus = '#ffffff'; // branco se algo inesperado
+                                break;
+                        }
+                        ?>
+
+                        <div style="font-weight:bold; font-size:1.1rem; color: <?php echo $corStatus; ?>">
+                            STATUS: <?php echo traduzirStatus($pedido['status_pedido']); ?>
+                        </div>
+
+                        <div style="font-size:1.3rem; font-weight:bold; color:#00ff00;">
+                            TOTAL: R$ <?php echo number_format($pedido['valor_total_pedido'], 2, ',', '.'); ?>
+                        </div>
+                    </div>
+
+                </div>
             </div>
 
+
             <div class="row">
+
+                <!-- 🔵 BLOCO 2 - CLIENTE -->
                 <div class="col-md-4 mb-4">
-                    <div class="card card-boxter h-100" style="background-color: #111; border: 1px solid #333;">
-                        <div class="cabecalho-vermelho" style="background-color: #cd221f; color: #fff; padding: 10px; text-align: center; font-weight: bold;">DADOS DE ENTREGA</div>
-                        <div class="card-body" style="color: #e4e4e4;">
-                            <h5 class="fw-bold" style="color: #fff;"><?php echo $pedido['nome_cliente']; ?></h5>
-                            <p class="small mb-3" style="color: #e4e4e4;">
-                                <a href="https://wa.me/55<?php echo preg_replace('/\D/', '', $pedido['telefone_cliente']); ?>" target="_blank" class="text-decoration-none" style="color: inherit;">
-                                    <i class="bi bi-whatsapp text-success"></i> <?php echo $pedido['telefone_cliente'] ?: 'N/A'; ?>
-                                </a>
-                            </p>
-                            <hr style="border-color: #444;">
+                    <div class="card card-boxter h-100">
+                        <div class="cabecalho-vermelho text-center">CLIENTE</div>
+                        <div class="card-body">
 
-                            <p class="small mb-0" style="line-height: 1.6;">
-                                <strong style="color: #cd221f;">RUA:</strong> <?php echo $pedido['entrega_logradouro'] ?: 'NÃO INFORMADO'; ?>, <?php echo $pedido['entrega_numero']; ?><br>
+                            <!-- Nome -->
+                            <h5 class="fw-bold mb-2">
+                                <?php echo htmlspecialchars($pedido['nome_cliente']); ?>
+                            </h5>
 
-                                <?php if (!empty($pedido['entrega_complemento'])): ?>
-                                    <strong style="color: #cd221f;">COMPLEMENTO:</strong> <?php echo $pedido['entrega_complemento']; ?><br>
+                            <!-- Telefone / WhatsApp -->
+                            <div class="mb-3">
+
+                                <?php if (!empty($pedido['telefone_cliente'])): ?>
+
+                                    <a href="https://wa.me/55<?php echo preg_replace('/\D/', '', $pedido['telefone_cliente']); ?>"
+                                        target="_blank"
+                                        class="btn btn-success w-100 fw-semibold">
+                                        <i class="bi bi-whatsapp"></i>
+                                        <?php echo htmlspecialchars($pedido['telefone_cliente']); ?>
+                                    </a>
+
+                                <?php else: ?>
+
+                                    <div class="alert alert-warning text-center p-2 mb-0">
+                                        <i class="bi bi-exclamation-triangle"></i>
+                                        Telefone não informado
+                                    </div>
+
                                 <?php endif; ?>
 
-                                <strong style="color: #cd221f;">BAIRRO:</strong> <?php echo $pedido['entrega_bairro']; ?><br>
-                                <strong style="color: #cd221f;">CIDADE:</strong> <?php echo $pedido['entrega_cidade']; ?> / <?php echo $pedido['entrega_uf']; ?><br>
-                                <strong style="color: #cd221f;">CEP:</strong> <?php echo $pedido['entrega_cep']; ?>
-                            </p>
+                            </div>
+
+                            <hr>
+
+                            <!-- Endereço -->
+                            <div style="line-height:1.6; font-size:0.95rem;">
+                                <strong>Endereço:</strong><br>
+
+                                <?php if (!empty($pedido['entrega_logradouro'])): ?>
+                                    <?php echo htmlspecialchars($pedido['entrega_logradouro']); ?>,
+                                    <?php echo htmlspecialchars($pedido['entrega_numero']); ?><br>
+                                <?php else: ?>
+                                    <span class="text-warning">Endereço não informado</span><br>
+                                <?php endif; ?>
+
+                                <?php if (!empty($pedido['entrega_complemento'])): ?>
+                                    <?php echo htmlspecialchars($pedido['entrega_complemento']); ?><br>
+                                <?php endif; ?>
+
+                                <?php if (!empty($pedido['entrega_bairro'])): ?>
+                                    <?php echo htmlspecialchars($pedido['entrega_bairro']); ?><br>
+                                <?php endif; ?>
+
+                                <?php if (!empty($pedido['entrega_cidade'])): ?>
+                                    <?php echo htmlspecialchars($pedido['entrega_cidade']); ?> -
+                                    <?php echo htmlspecialchars($pedido['entrega_uf']); ?><br>
+                                <?php endif; ?>
+
+                                <?php if (!empty($pedido['entrega_cep'])): ?>
+                                    CEP: <?php echo htmlspecialchars($pedido['entrega_cep']); ?>
+                                <?php endif; ?>
+
+                            </div>
+
                         </div>
                     </div>
                 </div>
 
+                <!-- 🟡 BLOCO 3 - PRODUTOS -->
                 <div class="col-md-8 mb-4">
-                    <div class="card card-boxter h-100">
-                        <div class="cabecalho-vermelho">ITENS DO PEDIDO</div>
-                        <div class="card-body p-0 itens-wrapper">
-                            <table class="table tabela-boxter">
+                    <div class="card card-boxter">
+                        <div class="cabecalho-vermelho">PRODUTOS DO PEDIDO</div>
+
+                        <div class="card-body p-0">
+                            <table class="table tabela-boxter mb-0">
                                 <thead>
-                                    <tr style="border-bottom: 1px solid #444 !important;">
-                                        <th class="py-3 text-start ps-4" style="width: 50%; color: #e4e4e4; border: none !important;">PRODUTO</th>
-                                        <th class="py-3" style="color: #e4e4e4; border: none !important;">Qtd</th>
-                                        <th class="py-3 text-end pe-4" style="color: #e4e4e4; border: none !important;">Preço Unit.</th>
+                                    <tr>
+                                        <th class="text-start ps-4">Produto</th>
+                                        <th>Qtd</th>
+                                        <th>Valor Unit.</th>
+                                        <th>Subtotal</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php while ($item = mysqli_fetch_assoc($res_itens)): ?>
+
+                                    <?php
+                                    $totalCalculado = 0;
+                                    while ($item = mysqli_fetch_assoc($res_itens)):
+
+                                        $subtotal = $item['qtde_item'] * $item['preco_unit_item'];
+                                        $totalCalculado += $subtotal;
+                                    ?>
+
                                         <tr>
-                                            <td data-label="Produto" class="text-start ps-4 fw-bold text-danger"><?php echo $item['nome_peca']; ?></td>
-                                            <td data-label="Qtd"><?php echo $item['qtde_item']; ?></td>
-                                            <td data-label="Preco Unitario" class="text-end pe-4">R$ <?php echo number_format($item['preco_unit_item'], 2, ',', '.'); ?></td>
+                                            <td class="text-start ps-4 fw-semibold">
+                                                <?php echo $item['nome_peca']; ?>
+                                            </td>
+                                            <td><?php echo $item['qtde_item']; ?></td>
+                                            <td>R$ <?php echo number_format($item['preco_unit_item'], 2, ',', '.'); ?></td>
+                                            <td style="color:#00ff00;">
+                                                R$ <?php echo number_format($subtotal, 2, ',', '.'); ?>
+                                            </td>
                                         </tr>
+
                                     <?php endwhile; ?>
+
                                 </tbody>
-                                <tfoot>
-                                    <tr style="background-color: #080808;">
-                                        <td colspan="2" class="text-end fw-bold py-3 total-label">VALOR TOTAL:</td>
-                                        <td class="text-end pe-4 py-3 text-valor-total total-value">
-                                            R$ <?php echo number_format($pedido['valor_total_pedido'], 2, ',', '.'); ?>
-                                        </td>
-                                    </tr>
-                                </tfoot>
                             </table>
                         </div>
+
+                        <!-- ⚫ TOTAL GRANDE -->
+                        <div style="background:#000; border-top:2px solid #cd221f; padding:20px; text-align:right;">
+
+                            <div style="font-size:1rem; margin-bottom:5px;">
+                                <span style="color:#ccc;">Subtotal Produtos:</span>
+                                <span style="color:#fff;">
+                                    R$ <?php echo number_format($totalCalculado, 2, ',', '.'); ?>
+                                </span>
+                            </div>
+
+                            <div style="font-size:1rem; margin-bottom:10px;">
+                                <span style="color:#ccc;">Frete:</span>
+                                <span style="color:#fff;">
+                                    R$ <?php echo number_format($pedido['valor_frete'], 2, ',', '.'); ?>
+                                </span>
+                            </div>
+
+                            <div style="font-size:1.5rem; font-weight:bold; color:#00ff00;">
+                                TOTAL GERAL:
+                                R$ <?php echo number_format($pedido['valor_total_pedido'], 2, ',', '.'); ?>
+                            </div>
+
+                        </div>
+
                     </div>
                 </div>
             </div>
 
-            <div class="text-end mt-2">
-                <button onclick="window.print()" class="btn btn-danger btn-lg rounded-0 px-5 fw-bold btn-imprimir">
+            <!-- 🔘 AÇÕES -->
+            <div class="text-end mt-3">
+                <button onclick="window.print()" class="btn btn-danger btn-lg px-5 fw-bold">
                     <i class="bi bi-printer"></i> IMPRIMIR ETIQUETA
                 </button>
             </div>
+
         </div>
     </div>
-
 </body>
 
 </html>

@@ -92,6 +92,11 @@ if ($valor_frete > 0) {
 }
 
 $valor_total = $subtotal_produtos + $valor_frete;
+
+$_SESSION['valor_frete'] = $valor_frete;
+$_SESSION['subtotal_produtos'] = $subtotal_produtos;
+$_SESSION['valor_total_final'] = $valor_total;
+
 // Bloqueio de segurança
 if ($valor_total <= 0) {
   die("Erro: O seu carrinho esta vazio.");
