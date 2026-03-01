@@ -287,9 +287,19 @@ function traduzirStatus($status)
 
         }
 
-        .btn-imprimir-wrapper {
-            text-align: center;
-            margin-top: 20px;
+        .btn-imprimir {
+            background-color: #dc3545;
+            border: none;
+            padding: 10px 26px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-imprimir:hover {
+            background-color: #bb2d3b;
+            transform: translateY(-1px);
         }
 
         /* ================================
@@ -550,14 +560,20 @@ function traduzirStatus($status)
 
                 </div>
             </div>
+            <!-- 🔘 AÇÕES -->
+            <div class="row mt-4">
+                <div class="col-12 text-end">
+                    <button type="button"
+                        class="btn btn-imprimir"
+                        onclick="window.print();">
+                        <i class="bi bi-printer me-2"></i>
+                        IMPRIMIR ETIQUETA
+                    </button>
+                </div>
+            </div>
         </div>
 
-        <!-- 🔘 AÇÕES -->
-        <div class="btn-imprimir-wrapper">
-            <a href="#" class="btn btn-danger btn-imprimir">
-                <i class="bi bi-printer"></i> IMPRIMIR ETIQUETA
-            </a>
-        </div>
+
 
     </div>
 </body>
