@@ -59,8 +59,9 @@ if (!empty($_SESSION['carrinho'])) {
 $valor_frete = 0;
 
 // Se tem dados de frete da sessão, usa esses valores
-if (isset($_SESSION['frete_valor']) && $_SESSION['frete_valor'] > 0) {
-  $valor_frete = (float)$_SESSION['frete_valor'];
+$frete_sessao = $_SESSION['entrega_temporaria']['frete_valor'] ?? ($_SESSION['frete_valor'] ?? null);
+if ($frete_sessao !== null && $frete_sessao > 0) {
+  $valor_frete = (float)$frete_sessao;
 }
 // Se não, calcula automaticamente igual ao carrinho
 else {
@@ -94,6 +95,7 @@ if ($valor_frete > 0) {
 $valor_total = $subtotal_produtos + $valor_frete;
 
 $_SESSION['valor_frete'] = $valor_frete;
+$_SESSION['frete_valor'] = $valor_frete;
 $_SESSION['subtotal_produtos'] = $subtotal_produtos;
 $_SESSION['valor_total_final'] = $valor_total;
 

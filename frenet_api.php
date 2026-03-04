@@ -7,18 +7,30 @@
 
 class FrenetAPI
 {
-    private $token = 'C3645FFBRB7F2R45B5R9A60R4A37A234BF60';
-    private $url_api = 'https://api.frenet.com.br/shipping/quote';
+    private string $token;
+    private string $url_api = 'https://api.frenet.com.br/shipping/quote';
 
     /**
      * Dimensões padrão da embalagem (em cm)
      * AJUSTE CONFORME SUAS EMBALAGENS
      */
     private $dimensoes_padrao = [
-        'altura' => 70,
-        'largura' => 70,
-        'comprimento' => 70,
+        'altura' => 10,
+        'largura' => 15,
+        'comprimento' => 20,
     ];
+
+    /**
+     * Construtor recebe o token da Frenet via .env
+     */
+    public function __construct(string $token)
+    {
+        $this->token = trim($token);
+
+        if (empty($this->token)) {
+            throw new Exception('FRENET_TOKEN não configurado.');
+        }
+    }
 
     /**
      * Calcula frete para um determinado CEP

@@ -21,6 +21,7 @@ tmp/
 temp/
 *.tmp
 log_frenet.txt
+log_pagamento.txt
 
 # ============================================
 # UPLOADS (arquivos do usuário)
@@ -28,6 +29,7 @@ log_frenet.txt
 uploads/
 img/uploads/
 public/uploads/
+img/867cbf7aecc0e5f869fadc0944e0e7bb.png
 
 # ============================================
 # IDE E EDITORES

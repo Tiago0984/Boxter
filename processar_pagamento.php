@@ -38,11 +38,37 @@ function json_error(string $message, int $statusCode = 400): void
 
 function resolver_access_token(): string
 {
+    $modo = strtolower((string)(getenv('APP_PAYMENT_MODE') ?: 'sandbox'));
     $token = trim((string)(getenv('MP_ACCESS_TOKEN') ?: ''));
+    if ($token === '' && $modo !== 'production') {
+        $token = trim((string)(getenv('MP_ACCESS_TOKEN_TEST') ?: ''));
+    }
     if ($token === '') {
         throw new RuntimeException('MP_ACCESS_TOKEN nao configurado.');
     }
+    if ($modo === 'production' && stripos($token, 'TEST-') === 0) {
+        throw new RuntimeException('MP_ACCESS_TOKEN de teste usado em producao.');
+    }
     return $token;
+}
+
+function validar_payload_pagamento(array $data): void
+{
+    if (empty($data['token'])) {
+        json_error('Token de pagamento ausente.', 422);
+    }
+    if (empty($data['installments']) || (int)$data['installments'] <= 0) {
+        json_error('Numero de parcelas invalido.', 422);
+    }
+    if (empty($data['payment_method_id'])) {
+        json_error('Metodo de pagamento ausente.', 422);
+    }
+    if (empty($data['payer']['email'])) {
+        json_error('Email do pagador ausente.', 422);
+    }
+    if (empty($data['payer']['identification']['type']) || empty($data['payer']['identification']['number'])) {
+        json_error('Documento do pagador ausente.', 422);
+    }
 }
 
 function calcular_totais(mysqli $conn, array $carrinho): float
@@ -94,13 +120,24 @@ function criar_pagamento_mp(array $data, float $valor, int $pedidoId): array
         "X-Idempotency-Key: " . hash('sha256', $pedidoId . '|' . $valor)
     ]);
 
-    $payment = $client->create($request, $requestOptions);
+    try {
 
-    return [
-        'id' => (string)$payment->id,
-        'status' => strtolower((string)$payment->status),
-        'status_detail' => (string)$payment->status_detail
-    ];
+        $payment = $client->create($request, $requestOptions);
+
+        return [
+            'id' => (string)$payment->id,
+            'status' => strtolower((string)$payment->status),
+            'status_detail' => (string)$payment->status_detail
+        ];
+    } catch (MPApiException $e) {
+
+        $apiResponse = $e->getApiResponse();
+
+        throw new RuntimeException(json_encode([
+            'mp_status_code' => $apiResponse ? $apiResponse->getStatusCode() : null,
+            'mp_response' => $apiResponse ? $apiResponse->getContent() : null
+        ]));
+    }
 }
 
 if (empty($_SESSION['cliente_id'])) {
@@ -115,6 +152,7 @@ $data = json_decode(file_get_contents('php://input'), true);
 if (!is_array($data)) {
     json_error('Payload invalido.');
 }
+validar_payload_pagamento($data);
 
 $idCliente = (int)$_SESSION['cliente_id'];
 

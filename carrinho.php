@@ -482,6 +482,12 @@ if (isset($_GET['limpar']) && $_GET['limpar'] == 'true') {
                 dadosEntrega.uf = document.getElementById('ent_uf').value;
             }
 
+            // Garante frete selecionado antes de seguir
+            if (!window.frete_selecionado || !window.frete_selecionado.valor) {
+                alert("Atencao: selecione uma opcao de frete para continuar.");
+                return;
+            }
+
             // Adiciona dados do frete selecionado
             if (window.frete_selecionado) {
                 dadosEntrega.frete_transportadora = window.frete_selecionado.transportadora;
@@ -535,25 +541,52 @@ if (isset($_GET['limpar']) && $_GET['limpar'] == 'true') {
                 })
                 .then(data => {
                     console.log('Resposta da API:', data);
-                    if (data.success && data.opcoes && data.opcoes.length > 0) {
+                    if (data && data.opcoes && data.opcoes.length > 0) {
                         exibirOpcoesFrete(data.opcoes);
                     } else {
                         console.error('Erro ao calcular frete:', data.message);
-                        // Fallback automático para não quebrar a experiência
-                        const freteFallback = 25.90;
-                        document.getElementById('frete_valor').innerHTML = 'R$ ' + freteFallback.toLocaleString('pt-BR');
-                        document.getElementById('total_valor').innerHTML = 'R$ ' +
-                            (<?php echo $subtotal_produtos; ?> + freteFallback).toLocaleString('pt-BR');
+                        aplicarFreteFallback();
                     }
                 })
                 .catch(err => {
                     console.error('Erro AJAX:', err);
-                    // Fallback em caso de erro de rede
-                    const freteFallback = 25.90;
-                    document.getElementById('frete_valor').innerHTML = 'R$ ' + freteFallback.toLocaleString('pt-BR');
-                    document.getElementById('total_valor').innerHTML = 'R$ ' +
-                        (<?php echo $subtotal_produtos; ?> + freteFallback).toLocaleString('pt-BR');
+                    aplicarFreteFallback();
                 });
+        }
+
+        function calcularFreteFallback(peso) {
+            const frete_base = 15.00;
+            const valor_por_kg = 3.50;
+
+            let valor_calculado = frete_base + (peso * valor_por_kg);
+            valor_calculado = Math.max(12.90, valor_calculado);
+            valor_calculado = Math.min(89.90, valor_calculado);
+
+            valor_calculado = Math.ceil(valor_calculado * 10) / 10;
+            valor_calculado = Math.floor(valor_calculado) + 0.90;
+
+            return valor_calculado;
+        }
+
+        function aplicarFreteFallback() {
+            const peso = <?php echo $peso_total_carrinho; ?>;
+            const subtotal = <?php echo $subtotal_produtos; ?>;
+            const freteFallback = calcularFreteFallback(peso);
+            const prazoFallback = freteFallback > 50 ? 3 : 5;
+
+            document.getElementById('frete_valor').innerHTML = 'R$ ' + freteFallback.toLocaleString('pt-BR', {
+                minimumFractionDigits: 2
+            });
+            document.getElementById('total_valor').innerHTML = 'R$ ' + (subtotal + freteFallback).toLocaleString('pt-BR', {
+                minimumFractionDigits: 2
+            });
+
+            // Salva na sessao via fetch quando finalizar
+            window.frete_selecionado = {
+                transportadora: 'Frete Automatico',
+                valor: freteFallback,
+                prazo: prazoFallback
+            };
         }
 
         function exibirOpcoesFrete(opcoes) {
@@ -563,7 +596,7 @@ if (isset($_GET['limpar']) && $_GET['limpar'] == 'true') {
             lista.innerHTML = '';
 
             if (!opcoes || opcoes.length === 0) {
-                lista.innerHTML = '<small class="text-danger">Nenhuma transportadora disponível</small>';
+                lista.innerHTML = '<small class="text-danger">Nenhuma transportadora disponivel</small>';
                 container.style.display = 'block';
                 return;
             }
@@ -590,8 +623,15 @@ if (isset($_GET['limpar']) && $_GET['limpar'] == 'true') {
             if (opcoes[0]) {
                 atualizarValorFrete(opcoes[0].transportadora, opcoes[0].valor, opcoes[0].prazo);
             }
+        }
+
+        function atualizarValorFrete(transportadora, valor, prazo) {
+            const valorNum = parseFloat(valor) || 0;
+            const subtotal = <?php echo $subtotal_produtos; ?>;
+            const total = subtotal + valorNum;
+
             // Atualiza o valor do frete
-            document.getElementById('frete_valor').innerHTML = 'R$ ' + parseFloat(valor).toLocaleString('pt-BR', {
+            document.getElementById('frete_valor').innerHTML = 'R$ ' + valorNum.toLocaleString('pt-BR', {
                 minimumFractionDigits: 2
             });
 
@@ -600,15 +640,15 @@ if (isset($_GET['limpar']) && $_GET['limpar'] == 'true') {
                 minimumFractionDigits: 2
             });
 
-            // Armazena o frete selecionado na sessão (será usado no pagar.php)
+            // Armazena o frete selecionado na sessao (sera usado no pagar.php)
             window.frete_selecionado = {
                 transportadora: transportadora,
-                valor: parseFloat(valor),
+                valor: valorNum,
                 prazo: prazo
             };
         }
 
-        $(document).ready(function() {
+$(document).ready(function() {
 
             // Se já estiver selecionado "endereço de cadastro"
             if ($('#entrega_cadastro').is(':checked')) {
