@@ -695,7 +695,7 @@ header,
     transform: translate(-50%, -50%) scale(1) !important;
     max-width: 85%;
     z-index: 5;
-    margin-top: -150px; /* Ajuste para posicionar melhor o carro no mobile */
+    margin-top: -100px; /* Ajuste para posicionar melhor o carro no mobile */
   }
 
   .sobre-secao .row {
@@ -708,6 +708,7 @@ header,
   .custom-padding-texto {
     padding: 40px 20px !important;
     text-align: center;
+    margin-top: 50px;
   }
 }
 
