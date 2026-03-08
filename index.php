@@ -23,7 +23,7 @@
     <meta property="og:title" content="Boxter Auto Peças - Especialista em Recuperação e Reparo">
     <meta property="og:description"
         content="Especialistas em reparação de peças automotivas com precisão de fábrica. Atendemos todas as marcas na Av. Marechal Tito, 1500.">
-    <meta property="image" content="https://">
+    <meta property="og:image" content="https://tiago.adminfo.dev.br/img/LOGOBOXTER.png">
     <meta property="og:type" content="website">
 
     <!--Icon favicon e app-->
